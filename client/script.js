@@ -2,6 +2,9 @@
 //THE TEST SERVER IS RUNNING ON LOCALHOST:3000//
 ////////////////////////////////////////////////
 
+
+
+
 // PROBLEM 1
 /*
     In the index.html file in this folder there is a button with an id of 'say-hello-button'!
@@ -10,7 +13,7 @@
 */
 
 // CODE HERE
-const sayHelloButton
+const sayHelloButton = document.querySelector('#say-hello-button');
 
 // PROBLEM 2
 /*
@@ -20,7 +23,11 @@ const sayHelloButton
 */
 
 // CODE HERE
+function changeBtn(){
+    sayHelloButton.classList.add("dark-button")
+}
 
+sayHelloButton.addEventListener("mouseover", changeBtn)
 
 // PROBLEM 3
 /*
@@ -32,7 +39,10 @@ const sayHelloButton
 */
 
 // CODE HERE
-
+function changeBtnBack() {
+    sayHelloButton.classList.remove("dark-button")
+}
+sayHelloButton.addEventListener("mouseout", changeBtnBack)
 
 // PROBLEM 4
 /*
@@ -53,7 +63,7 @@ const sayHello = () => {
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
-
+sayHelloButton.addEventListener('click', sayHello)
 
 // PROBLEM 5 
 /*
@@ -68,10 +78,23 @@ const sayHello = () => {
 
 const ohMy = () => {
     // YOUR CODE HERE
+    axios.get('http://localhost:3000/animals')
+    .then(res => {
+        function newP (input) {
+            let p = document.createElement('p')
+            p.textContent = input
+            document.querySelector('body').appendChild(p)
+        }
+     
+        for(let animal of res.data){
+            newP(animal)
+        }
+        console.log(res.data)
+    })
+    .catch(err => console.log(err));
 }
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
-
 
 // PROBLEM 6 
 /*
@@ -88,8 +111,20 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 
 const repeatMyParam = () => {
     //YOUR CODE HERE
+    let param = "your param here"
+    axios.get(`http://localhost:3000/repeat/${param}`)
+    .then(res => {
+        let repeatText = document.querySelector("#repeat-text")
+        repeatText.style.display = 'block';
+        repeatText.style.backgroundColor = 'green';
+        repeatText.textContent = res.data
+        console.log(res.data)
+    })
+    .catch(err => console.log(err))
 }
 
+let repeatButton = document.querySelector("#repeat-button")
+repeatButton.addEventListener('click', repeatMyParam)
 // PROBLEM 7
 /*
     Now that we have the response data, let's add it to our web page! 
@@ -111,9 +146,16 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE
-
-
-
+function makeGet() {
+    let query = {likesfoo: true}
+    axios.get(`http://localhost:3000/query-test?${query}`)
+    .then (res => {
+        console.log(res.data)
+    })
+    .catch (err => console.log(err))
+}
+    
+document.querySelector("#query-button").addEventListener("click", makeGet)
 ////////////////
 //INTERMEDIATE//
 ////////////////
